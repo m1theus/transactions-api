@@ -1,7 +1,7 @@
 
 # 📜 Transactions API
 
-A microservice that allows users to manage wishlists and their products.
+A microservice for managing transaction routines.
 
 Built with:
 -  Java 21
