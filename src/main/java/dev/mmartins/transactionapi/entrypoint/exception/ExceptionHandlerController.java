@@ -24,6 +24,12 @@ public class ExceptionHandlerController {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(final IllegalArgumentException ex) {
+        log.error(ex.getMessage(), ex);
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
     private ResponseEntity<ErrorResponse> buildResponse(final HttpStatus status, final String message) {
         var error = new ErrorResponse(status.value(), message, LocalDateTime.now());
         return new ResponseEntity<>(error, status);
