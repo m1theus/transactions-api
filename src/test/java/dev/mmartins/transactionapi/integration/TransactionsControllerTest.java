@@ -62,7 +62,7 @@ public class TransactionsControllerTest {
     void shouldCreateATransaction() throws Exception {
         var request = new CreateTransactionRequest(1L, OperationType.NormalPurchase.getId(), BigDecimal.valueOf(2.22));
         var account = new Account(1L, "12345678900");
-        var transaction = new Transaction(1L, account, request.amount(), OperationType.NormalPurchase, LocalDateTime.now());
+        var transaction = new Transaction(1L, account, request.amount(), request.amount(), OperationType.NormalPurchase, LocalDateTime.now());
         when(createTransactionUseCase.execute(request)).thenReturn(new TransactionResponse(transaction));
 
         mockMvc.perform(post("/transactions")

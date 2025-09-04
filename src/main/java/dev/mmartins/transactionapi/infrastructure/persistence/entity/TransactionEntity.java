@@ -37,6 +37,9 @@ public class TransactionEntity {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
+    @Column(name = "balance", nullable = false)
+    private BigDecimal balance;
+
     @Column(name = "operation_type", nullable = false)
     private Long operationId;
 
@@ -48,6 +51,7 @@ public class TransactionEntity {
         return new TransactionEntity(transaction.getId(),
                 accountEntity,
                 transaction.getAmount(),
+                transaction.getBalance(),
                 transaction.getOperationId(),
                 transaction.getEventDate());
     }

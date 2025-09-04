@@ -6,6 +6,8 @@ import dev.mmartins.transactionapi.infrastructure.persistence.dao.JpaTransaction
 import dev.mmartins.transactionapi.infrastructure.persistence.entity.TransactionEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
     private final JpaTransactionRepository repository;
@@ -18,6 +20,24 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     public Transaction create(final Transaction transaction) {
         var entity = repository.save(toEntity(transaction));
         return toDomain(entity);
+    }
+
+    @Override
+    public List<Transaction> findPreviousTransactions(final Long accountId) {
+        return repository.findAllByAccountIdOrderByEventDateAsc(accountId)
+                .stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
+    public void saveAll(final List<Transaction> transactions) {
+        var entities = transactions
+                .stream()
+                .map(this::toEntity)
+                .toList();
+
+        repository.saveAll(entities);
     }
 
     private Transaction toDomain(final TransactionEntity entity) {

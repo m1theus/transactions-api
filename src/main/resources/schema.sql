@@ -8,6 +8,7 @@ CREATE TABLE transactions (
       account_id BIGINT NOT NULL,
       operation_type INT NOT NULL,
       amount DECIMAL(15, 2) NOT NULL,
+      balance DECIMAL(15, 2) NOT NULL,
       event_date TIMESTAMP NOT NULL DEFAULT NOW(),
 
       CONSTRAINT fk_transaction_account FOREIGN KEY (account_id)

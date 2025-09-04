@@ -24,4 +24,8 @@ public enum OperationType {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Invalid operation id: " + operationId));
     }
+
+    public boolean isNegativeAmount() {
+        return this == NormalPurchase || this == PurchaseWithInstallments || this == Withdraw;
+    }
 }

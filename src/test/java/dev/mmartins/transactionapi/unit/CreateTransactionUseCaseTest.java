@@ -2,6 +2,7 @@ package dev.mmartins.transactionapi.unit;
 
 import dev.mmartins.transactionapi.application.exception.AccountNotFoundException;
 import dev.mmartins.transactionapi.application.usecase.CreateTransactionUseCase;
+import dev.mmartins.transactionapi.application.usecase.DischargeUseCase;
 import dev.mmartins.transactionapi.domain.entity.Account;
 import dev.mmartins.transactionapi.domain.entity.OperationType;
 import dev.mmartins.transactionapi.domain.entity.Transaction;
@@ -31,10 +32,12 @@ public class CreateTransactionUseCaseTest {
     private AccountRepository accountRepository;
     @Mock
     private TransactionRepository transactionRepository;
+    @Mock
+    private DischargeUseCase dischargeUseCase;
 
     @BeforeEach
     void setUp() {
-        createTransactionUseCase = new CreateTransactionUseCase(accountRepository, transactionRepository);
+        createTransactionUseCase = new CreateTransactionUseCase(accountRepository, transactionRepository, dischargeUseCase);
     }
 
     @Test
@@ -45,7 +48,7 @@ public class CreateTransactionUseCaseTest {
         var operationId = OperationType.NormalPurchase;
         var amount = BigDecimal.valueOf(2.20);
         var account = new Account(accountId, documentNumber);
-        var transaction = new Transaction(1L, account, amount, operationId, LocalDateTime.now());
+        var transaction = new Transaction(1L, account, amount, amount, operationId, LocalDateTime.now());
         when(accountRepository.getAccount(any())).thenReturn(Optional.of(new Account(1L, documentNumber)));
         when(transactionRepository.create(any())).thenReturn(transaction);
 
@@ -70,7 +73,7 @@ public class CreateTransactionUseCaseTest {
         var operationId = OperationType.NormalPurchase;
         var amount = BigDecimal.valueOf(2.20);
         var account = new Account(accountId, documentNumber);
-        var transaction = new Transaction(1L, account, amount, operationId, LocalDateTime.now());
+        var transaction = new Transaction(1L, account, amount, amount, operationId, LocalDateTime.now());
         when(transactionRepository.create(any())).thenReturn(transaction);
 
         // when
